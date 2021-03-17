@@ -13,28 +13,29 @@
 #import "NIMBadgeView.h"
 
 @implementation NIMSessionListCell
-#define AvatarWidth 40
+#define AvatarWidth 52
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier{
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
-        _avatarImageView = [[NIMAvatarImageView alloc] initWithFrame:CGRectMake(0, 0, 40, 40)];
+        _avatarImageView = [[NIMAvatarImageView alloc] initWithFrame:CGRectMake(0, 0, AvatarWidth, AvatarWidth)];
         [self.contentView addSubview:_avatarImageView];
         
         _nameLabel = [[UILabel alloc] initWithFrame:CGRectZero];
         _nameLabel.backgroundColor = [UIColor clearColor];
-        _nameLabel.font            = [UIFont systemFontOfSize:15.f];
+        _nameLabel.font            = [UIFont boldSystemFontOfSize:17.f];
+        _nameLabel.textColor       = [UIColor colorWithRed:28.0/255.0 green:40.0/255.0 blue:65.0/255.0 alpha:1];
         [self.contentView addSubview:_nameLabel];
         
         _messageLabel = [[UILabel alloc] initWithFrame:CGRectZero];
         _messageLabel.backgroundColor = [UIColor clearColor];
         _messageLabel.font            = [UIFont systemFontOfSize:14.f];
-        _messageLabel.textColor       = [UIColor lightGrayColor];
+        _messageLabel.textColor       = [UIColor colorWithRed:87.0/255.0 green:99.0/255.0 blue:121.0/255.0 alpha:1];
         [self.contentView addSubview:_messageLabel];
         
         _timeLabel = [[UILabel alloc] initWithFrame:CGRectZero];
         _timeLabel.backgroundColor = [UIColor clearColor];
-        _timeLabel.font            = [UIFont systemFontOfSize:14.f];
-        _timeLabel.textColor       = [UIColor lightGrayColor];
+        _timeLabel.font            = [UIFont systemFontOfSize:12.f];
+        _timeLabel.textColor       = [UIColor colorWithRed:87.0/255.0 green:99.0/255.0 blue:121.0/255.0 alpha:1];
         [self.contentView addSubview:_timeLabel];
         
         _badgeView = [NIMBadgeView viewWithBadgeTip:@""];
@@ -62,15 +63,15 @@
 - (void)layoutSubviews{
     [super layoutSubviews];
     //Session List
-    NSInteger sessionListAvatarLeft             = 15;
-    NSInteger sessionListNameTop                = 15;
-    NSInteger sessionListNameLeftToAvatar       = 15;
-    NSInteger sessionListMessageLeftToAvatar    = 15;
-    NSInteger sessionListMessageBottom          = 15;
-    NSInteger sessionListTimeRight              = 15;
-    NSInteger sessionListTimeTop                = 15;
-    NSInteger sessionBadgeTimeBottom            = 15;
-    NSInteger sessionBadgeTimeRight             = 15;
+    NSInteger sessionListAvatarLeft             = 20;
+    NSInteger sessionListNameTop                = 20;
+    NSInteger sessionListNameLeftToAvatar       = 20;
+    NSInteger sessionListMessageLeftToAvatar    = 20;
+    NSInteger sessionListMessageBottom          = 20;
+    NSInteger sessionListTimeRight              = 20;
+    NSInteger sessionListTimeTop                = 20;
+    NSInteger sessionBadgeTimeBottom            = 20;
+    NSInteger sessionBadgeTimeRight             = 20;
     
     _avatarImageView.nim_left    = sessionListAvatarLeft;
     _avatarImageView.nim_centerY = self.nim_height * .5f;

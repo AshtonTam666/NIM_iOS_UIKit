@@ -43,7 +43,7 @@
     self = [super initWithFrame:frame];
     if (self) {
         self.backgroundColor  = [UIColor clearColor];
-        _badgeBackgroundColor = [UIColor redColor];
+        _badgeBackgroundColor = [UIColor colorWithRed:28.0/255.0 green:83.0/255.0 blue:208.0/255.0 alpha:1];
         _badgeTextColor       = [UIColor whiteColor];
         _badgeTextFont        = [UIFont boldSystemFontOfSize:12];
         _whiteCircleWidth     = 2.f;
@@ -67,11 +67,11 @@
 - (void)setBadgeValue:(NSString *)badgeValue {
     _badgeValue = badgeValue;
     if (_badgeValue.integerValue > 9) {
-       _badgeLeftPadding     = 6.f;
+       _badgeLeftPadding     = 8.f;
     }else{
-       _badgeLeftPadding     = 2.f;
+       _badgeLeftPadding     = 4.f;
     }
-    _badgeTopPadding      = 2.f;
+    _badgeTopPadding      = 4.f;
 
     self.frame = [self frameWithStr:badgeValue];
     

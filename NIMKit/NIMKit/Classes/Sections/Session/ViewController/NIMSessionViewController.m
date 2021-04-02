@@ -160,11 +160,9 @@
 - (void)viewDidLayoutSubviews
 {
     [super viewDidLayoutSubviews];
-    [self changeLeftBarBadge:self.conversationManager.allUnreadCount];
+//    [self changeLeftBarBadge:self.conversationManager.allUnreadCount];
     [self.interactor resetLayout];
 }
-
-
 
 
 #pragma mark - 消息收发接口
@@ -387,7 +385,7 @@
     if ([recentSession.session isEqual:self.session]) {
         return;
     }
-    [self changeLeftBarBadge:totalUnreadCount];
+//    [self changeLeftBarBadge:totalUnreadCount];
 }
 
 #pragma mark - NIMMediaManagerDelegate
@@ -932,6 +930,11 @@
         
         titleView.titleLabel.text = self.sessionTitle;
         titleView.subtitleLabel.text = self.sessionSubTitle;
+        
+        [titleView.titleLabel setTextColor:UIColor.whiteColor];
+        [titleView.subtitleLabel setTextColor:UIColor.whiteColor];
+        
+        [titleView.titleLabel setFont:[UIFont boldSystemFontOfSize:17.f]];
         
         self.titleLabel    = titleView.titleLabel;
         self.subTitleLabel = titleView.subtitleLabel;

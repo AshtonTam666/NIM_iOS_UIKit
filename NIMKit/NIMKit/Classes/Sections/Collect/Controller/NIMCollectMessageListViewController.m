@@ -9,13 +9,6 @@
 #import "NIMCollectMessageListViewController.h"
 #import "NIMLoadMoreFooterView.h"
 #import "NIMCollectMessageCell.h"
-#import "NIMMessageModel.h"
-#import "NIMKit.h"
-#import "NIMMessageMaker.h"
-#import <NIMSDK/NIMSDK.h>
-#import "NSString+NIMKit.h"
-#import "NIMKitAudioCenter.h"
-#import "NIMMessageCellFactory.h"
 
 @interface NIMCollectMessageListViewController () <UITableViewDataSource,UITableViewDelegate>
 
@@ -187,26 +180,44 @@
     self.queryOptions.toTime = self.collectList.lastObject.createTime;
     self.queryOptions.excludeId = self.collectList.lastObject.id;
     __weak typeof(self) wself = self;
-    [NIMSDK.sharedSDK.chatExtendManager queryCollect:self.queryOptions completion:^(NSError * _Nullable error, NSArray<NIMCollectInfo *> * _Nullable collectInfos, NSInteger totalCount) {
-        __strong typeof(self) sself = wself;
-        if (!sself) {
-            return;
-        }
-        [collectInfos enumerateObjectsUsingBlock:^(NIMCollectInfo * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-            NIMMessage *message = [NIMSDK.sharedSDK.conversationManager decodeMessageFromData:[obj.data dataUsingEncoding:NSUTF8StringEncoding]];
-            NIMMessageModel *model = [[NIMMessageModel alloc] initWithMessage:message];
-            model.shouldShowPinContent = NO;
-            model.enableQuickComments = NO;
-            model.enableSubMessages = NO;
-            model.enableRepliedContent = NO;
-            [sself.messageList addObject:model];
-            [sself.collectList addObject:obj];
+    
+    if (self.nimMessage != nil && self.collectInfo != nil){
+        NIMMessageModel *model = [[NIMMessageModel alloc] initWithMessage:self.nimMessage];
+        model.shouldShowPinContent = NO;
+        model.enableQuickComments = NO;
+        model.enableSubMessages = NO;
+        model.enableRepliedContent = NO;
+                
+        [self.messageList addObject:model];
+        [self.collectList addObject:self.collectInfo];
+        self.noMoreData = YES;
+        [self.tableView reloadData];
+        [self showOrHideEmptyView];
+        [self.loadMoreFooter stopAnimation];
+        
+    }else{
+        [NIMSDK.sharedSDK.chatExtendManager queryCollect:self.queryOptions completion:^(NSError * _Nullable error, NSArray<NIMCollectInfo *> * _Nullable collectInfos, NSInteger totalCount) {
+            __strong typeof(self) sself = wself;
+            if (!sself) {
+                return;
+            }
+            [collectInfos enumerateObjectsUsingBlock:^(NIMCollectInfo * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+                NIMMessage *message = [NIMSDK.sharedSDK.conversationManager decodeMessageFromData:[obj.data dataUsingEncoding:NSUTF8StringEncoding]];
+                NIMMessageModel *model = [[NIMMessageModel alloc] initWithMessage:message];
+                model.shouldShowPinContent = NO;
+                model.enableQuickComments = NO;
+                model.enableSubMessages = NO;
+                model.enableRepliedContent = NO;
+                [sself.messageList addObject:model];
+                [sself.collectList addObject:obj];
+            }];
+            sself.noMoreData = totalCount == sself.messageList.count;
+            [sself.tableView reloadData];
+            [sself showOrHideEmptyView];
+            [sself.loadMoreFooter stopAnimation];
         }];
-        sself.noMoreData = totalCount == sself.messageList.count;
-        [sself.tableView reloadData];
-        [sself showOrHideEmptyView];
-        [sself.loadMoreFooter stopAnimation];
-    }];
+
+    }
 }
 
 - (NIMCollectQueryOptions *)queryOptions

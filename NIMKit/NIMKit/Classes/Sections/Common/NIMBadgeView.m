@@ -46,7 +46,7 @@
         _badgeBackgroundColor = [UIColor colorWithRed:28.0/255.0 green:83.0/255.0 blue:208.0/255.0 alpha:1];
         _badgeTextColor       = [UIColor whiteColor];
         _badgeTextFont        = [UIFont boldSystemFontOfSize:12];
-        _whiteCircleWidth     = 2.f;
+        _whiteCircleWidth     = 0;
     }
     return self;
 }
